@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import TodoListItem from '../todo-list-item';
 import './todo-list.css';
@@ -24,6 +24,16 @@ export const TodoListContainer = ({elements,  onAddItem, t_id}) => {
 };
 
 const TodoList = ({ items, onAddItem, onMoveUP, onMoveDown, t_id}) => {
+
+    useEffect(() => {
+        getDataFromDb()
+    }, []);
+
+    const getDataFromDb = () => {
+        fetch('http://localhost:3001/items/getData')
+            .then((data) => data.json())
+            .then((res) => console.log(res.data));
+    };
 
     const arrPosition = items
         .filter((item) => item.parentId === t_id)

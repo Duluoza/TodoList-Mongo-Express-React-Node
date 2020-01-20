@@ -9,11 +9,13 @@ import axios from 'axios';
 
 const addItem = item => dispatch => {
     console.log('item', item);
-    axios.post('http://localhost:3001/api/putData', {
+    let newItem = axios.post('http://localhost:3001/items/putData', {
         label: item.label,
         id: item.id
-    });
-
+    }).then((res) => {
+        console.log(res.config.data)
+        console.log(res)
+    })
     // dispatch({ type: "ADD_ITEM", newItem })
 
 // .then(() => {
