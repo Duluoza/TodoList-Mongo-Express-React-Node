@@ -30,21 +30,21 @@ const itemMove = (state, action, quantity) => {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case "ADD_ITEM" :
-            const arrItemsForList = state.items.filter(item => item.parentId === action.payload.t_id);
-            if(arrItemsForList.length === 0){
-                action.payload.pos = 1
-            } else if(arrItemsForList.length + 1 !== action.payload.pos){
-                action.payload.pos = arrItemsForList.length + 1
-            }
+            // const arrItemsForList = state.items.filter(item => item.parentId === action.payload.t_id);
+            // if(arrItemsForList.length === 0){
+            //     action.payload.pos = 1
+            // } else if(arrItemsForList.length + 1 !== action.payload.pos){
+            //     action.payload.pos = arrItemsForList.length + 1
+            // }
             return {
                 ...state,
-                items: [...state.items,
-                    {
-                        label: action.payload.label,
-                        id: id++,
-                        pos: action.payload.pos++,
-                        parentId: action.payload.t_id
-                    }],
+                items: [...state.items, action.payload]
+                    // {
+                    //     label: action.payload.label,
+                    //     id: id++,
+                    //     pos: action.payload.pos++,
+                    //     parentId: action.payload.t_id,
+                    // }],
 
             };
         case "DELETE_ITEM" :

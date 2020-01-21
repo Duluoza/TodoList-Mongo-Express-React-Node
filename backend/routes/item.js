@@ -2,28 +2,28 @@ const {Router} = require('express');
 const Item = require('../models/item');
 const router = new Router();
 
-router.post('/putData',async (req, res) => {
+router.post('/putData', async (req, res) => {
 
-    let { id, label } = req.body;
-    if (!id || !label) {
-        return res.json({
-            success: false,
-            error: 'INVALID INPUTS',
-        });
-    }
+    let data = new Item();
 
-    let data = await new Item(req.body);
-    console.log("data", data);
+    let { label, parentId } = req.body;
+    data.label = label;
+    data.parentId = parentId;
+    Item.find({ parentId: parentId })
+        .then(children => {data.pos = children.length ? children.length : 0});
+    data.save((err, obj) => {
+        if (err) return res.json({ success: false, error: err });
+        return res.json({ success: true, data: obj });
+    });
 
-await res.send(data)
-    // data._id = _id;
-    // data.label = label;
-    // data.id = ids;
-    // data.save((err, cont) => {
-    //     if (err) return res.json({ success: false, error: err });
-    //     return res.status(200).send(cont)
-    // });
-
+    // let data = await new Item(...req.body);
+    //
+    // try{
+    //     await data.save();
+    //    await res.send({ success: true, data})
+    // } catch (err) {
+    //    await res.json({ success: false, error: err.message })
+    // }
 });
 
 // this is our get method

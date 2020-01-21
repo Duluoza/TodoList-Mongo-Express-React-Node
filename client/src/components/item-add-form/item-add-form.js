@@ -6,15 +6,13 @@ class ItemAddForm extends Component {
 
     state = {
         label: '',
-        id: 0,
-        // t_id: '',
-        // pos: 1,
+        t_id: '',
     };
 
     onLabelChange = (e) => {
         this.setState({
             label: e.target.value,
-            // t_id: this.props.t_id,
+            t_id: this.props.t_id,
         })
     };
 

@@ -1,35 +1,16 @@
 import axios from 'axios';
 
-// const addItem = (item) => {
-//     return {
-//         type: "ADD_ITEM",
-//         payload: item
-//     }
-// };
-
-const addItem = item => dispatch => {
-    console.log('item', item);
-    let newItem = axios.post('http://localhost:3001/items/putData', {
+const addItem = item => async dispatch => {
+    let newItem =  await axios.post('http://localhost:3001/items/putData', {
         label: item.label,
-        id: item.id
-    }).then((res) => {
-        console.log(res.config.data)
-        console.log(res)
-    })
-    // dispatch({ type: "ADD_ITEM", newItem })
-
-// .then(() => {
-//         dispatch({ type: 'del-item', parent })
-//     });
-
-    // return {
-    //     type: "ADD_ITEM",
-    //     payload: item
-    // }
+        parentId: item.t_id
+    });
+    
+    console.log(newItem.data.data)
+    dispatch({type: 'ADD_ITEM', payload: newItem.data.data})
 };
 
 const deleteItem = (id) => {
-    console.log(id)
 
     return {
         type: "DELETE_ITEM",
@@ -54,8 +35,6 @@ const moveDown = (item) => {
 };
 
 const addList = (id) => {
-    console.log(id);
-
 
     return {
         type: "ADD_LIST",
@@ -64,7 +43,6 @@ const addList = (id) => {
 };
 
 const deleteList = (id) => {
-    console.log(id);
 
     return {
         type: "DELETE_LIST",

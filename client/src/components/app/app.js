@@ -13,7 +13,7 @@ export default class App extends Component {
             <Provider store={store}>
                 <div className="todo-app">
                     <AppHeader />
-                    <TodoList t_id={null}/>
+                    <TodoList t_id={0}/>
                 </div>
             </Provider>
         );

@@ -5,6 +5,8 @@ import './todo-list.css';
 import ItemAddForm from "../item-add-form";
 import { connect } from 'react-redux'
 import {addItem, moveDown, moveUp,} from '../../actions'
+import axios from 'axios';
+
 
 export const TodoListContainer = ({elements,  onAddItem, t_id}) => {
 
@@ -25,15 +27,14 @@ export const TodoListContainer = ({elements,  onAddItem, t_id}) => {
 
 const TodoList = ({ items, onAddItem, onMoveUP, onMoveDown, t_id}) => {
 
-    useEffect(() => {
-        getDataFromDb()
-    }, []);
-
-    const getDataFromDb = () => {
-        fetch('http://localhost:3001/items/getData')
-            .then((data) => data.json())
-            .then((res) => console.log(res.data));
-    };
+    // useEffect(() => {
+    //     getDataFromDb()
+    // }, []);
+    //
+    // const getDataFromDb = () => {
+    //     axios.get('http://localhost:3001/items/getData')
+    //         .then((res) => console.log(res.data));
+    // };
 
     const arrPosition = items
         .filter((item) => item.parentId === t_id)
@@ -43,13 +44,13 @@ const TodoList = ({ items, onAddItem, onMoveUP, onMoveDown, t_id}) => {
         .filter((item) => item.parentId === t_id)
         .sort((a, b)=> a.pos - b.pos)
         .map((item) => {
-        const {id, ...itemProps} = item;
+        const {_id, ...itemProps} = item;
         return(
-          <li key={id}
+          <li key={_id}
               className='list-group-item'>
               <TodoListItem
                   {...itemProps}
-                  id={id}
+                  id={_id}
                   arrPosition={arrPosition}
                   onMoveUP={() => onMoveUP(item)}
                   onMoveDown={() => onMoveDown(item)}
