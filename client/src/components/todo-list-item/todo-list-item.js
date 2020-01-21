@@ -8,8 +8,7 @@ import {addList, deleteItem, deleteList} from "../../actions";
 
 const TodoListItem = (props) => {
 
-    const {label, onDelete, pos, _id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList} = props;
-
+    const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList} = props;
     const [isChild, setIsChild] = useState(false);
     const [isDisable, setIsDisable] = useState(false);
 
@@ -46,18 +45,18 @@ const TodoListItem = (props) => {
                 <span
                     className="todo-list-item-label"
                 >
-                {label} <span className="todo-list-pos">pos {pos}, id {_id}</span>
+                {label} <span className="todo-list-pos">pos {pos}, id {id}</span>
                 </span>
 
                 <button type="button"
                         className="btn btn-outline-danger btn-sm"
-                        onClick={() => deleteItem(_id)}
+                        onClick={() => deleteItem(id)}
                 >
                         <i className="fa fa-trash-o"/>
                 </button>
                 <button type="button"
                         className='btn btn-outline-warning btn-sm'
-                        onClick={() => addOrDeleteList(_id, 1)}
+                        onClick={() => addOrDeleteList(id, 1)}
                         disabled={isDisable}
 
                 >
@@ -83,10 +82,10 @@ const TodoListItem = (props) => {
             <div className='todo-list-sub'>
                 {isChild &&
                 <>
-                    <TodoList t_id={_id}/>
+                    <TodoList t_id={id}/>
                     <button
                         className="btn btn-outline-danger"
-                        onClick={() => addOrDeleteList(_id , 0)}
+                        onClick={() => addOrDeleteList(id , 0)}
                     >
                         Delete
                     </button>

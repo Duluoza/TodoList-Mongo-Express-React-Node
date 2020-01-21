@@ -45,6 +45,7 @@ const TodoList = ({ items, onAddItem, onMoveUP, onMoveDown, t_id}) => {
         .sort((a, b)=> a.pos - b.pos)
         .map((item) => {
         const {_id, ...itemProps} = item;
+            console.log(_id)
         return(
           <li key={_id}
               className='list-group-item'>
