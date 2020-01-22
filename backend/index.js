@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const itemRoutes = require('./routes/item');
+const listRoutes = require('./routes/list');
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/items', itemRoutes);
+app.use('/lists', listRoutes);
 
 const API_PORT = 3001;
 

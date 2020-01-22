@@ -1,12 +1,18 @@
 import axios from 'axios';
 
+const setItems = items => async dispatch => {
+    dispatch({type: 'SET_ITEMS', payload: items.data.data})
+};
+
+const setLists = lists => async dispatch => {
+    dispatch({type: 'SET_LISTS', payload: lists.data.data})
+};
+
 const addItem = item => async dispatch => {
-    let newItem =  await axios.post('http://localhost:3001/items/putData', {
+    let newItem =  await axios.post('http://localhost:3001/items/addItem', {
         label: item.label,
         parentId: item.t_id
     });
-    
-    console.log(newItem.data.data)
     dispatch({type: 'ADD_ITEM', payload: newItem.data.data})
 };
 
@@ -34,12 +40,11 @@ const moveDown = (item) => {
     }
 };
 
-const addList = (id) => {
-
-    return {
-        type: "ADD_LIST",
-        payload: id
-    }
+const addList = (id) => async dispatch => {
+    let newList =  await axios.post('http://localhost:3001/lists/addList', {
+        parentId: id
+    });
+    dispatch({type: 'ADD_LIST', payload: newList.data.data})
 };
 
 const deleteList = (id) => {
@@ -50,4 +55,4 @@ const deleteList = (id) => {
     }
 };
 
-export { addItem, deleteItem, moveUp, moveDown, addList, deleteList }
+export { addItem, deleteItem, moveUp, moveDown, addList, deleteList, setItems, setLists }

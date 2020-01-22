@@ -1,15 +1,10 @@
 const initialState = {
     items:[],
-    lists: [
-        {
-            parentId: null,
-            id: 0
-        },
-    ]
+    lists: [],
 };
 
-let id = 1;
-let l_id = 0;
+// let id = 1;
+// let l_id = 0;
 
 const itemMove = (state, action, quantity) => {
     return {
@@ -29,7 +24,16 @@ const itemMove = (state, action, quantity) => {
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
+        case 'SET_ITEMS' :
+            return {
+                ...state, items: action.payload
+            };
+        case 'SET_LISTS' :
+            return {
+                ...state, lists: action.payload
+            };
         case "ADD_ITEM" :
+            console.log('action', action.payload);
             // const arrItemsForList = state.items.filter(item => item.parentId === action.payload.t_id);
             // if(arrItemsForList.length === 0){
             //     action.payload.pos = 1
@@ -65,15 +69,10 @@ const reducer = (state = initialState, action) => {
         case "MOVE_DOWN" :
             return itemMove(state, action, -1);
         case "ADD_LIST" :
+            console.log('add-listtt' , action.payload)
             return {
                 ...state,
-                lists: [
-                    ...state.lists,
-                    {
-                        parentId: action.payload,
-                        id: ++l_id
-                    }
-                ],
+                lists: [...state.lists, action.payload],
             };
         case "DELETE_LIST" :
             const filter = (item => item.parentId !== action.payload);
