@@ -52,9 +52,9 @@ const reducer = (state = initialState, action) => {
 
             };
         case "DELETE_ITEM" :
-            const delItem = state.items.find((el) => el.id === action.payload);
+            const delItem = state.items.find((el) => el._id === action.payload);
             let newArray = state.items
-                .filter(item => (item.id !== delItem.id && item.parentId !== delItem.id && item.id !== item.parentId))
+                .filter(item => (item._id !== delItem._id && item.parentId !== delItem._id && item._id !== item.parentId))
                 .map(item => {
                     if (item.parentId === delItem.parentId && item.pos > delItem.pos) item.pos -= 1;
                     return item;

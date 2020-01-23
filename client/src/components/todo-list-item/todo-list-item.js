@@ -8,9 +8,13 @@ import {addList, deleteItem, deleteList} from "../../actions";
 
 const TodoListItem = (props) => {
 
-    const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList} = props;
+    const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList, list, lists} = props;
     const [isChild, setIsChild] = useState(false);
-    const [isDisable, setIsDisable] = useState(false);
+    const [isDisable, setIsDisable] = useState(true);
+
+    // if(list && list.parentId === id) {
+    //     setIsChild(true);
+    // }
 
     // const addList = (id) => {
     //     setIsChild(true);
@@ -57,7 +61,7 @@ const TodoListItem = (props) => {
                 <button type="button"
                         className='btn btn-outline-warning btn-sm'
                         onClick={() => addOrDeleteList(id, 1)}
-                        disabled={isDisable}
+                        disabled={list && isDisable}
 
                 >
                         <i className='fa fa-plus-circle'/>
@@ -80,9 +84,9 @@ const TodoListItem = (props) => {
                 </div>
             </span>
             <div className='todo-list-sub'>
-                {isChild &&
+                {list && list.parentId === id &&
                 <>
-                    <TodoList t_id={id}/>
+                    <TodoList t_id={id} key={id}/>
                     <button
                         className="btn btn-outline-danger"
                         onClick={() => addOrDeleteList(id , 0)}
@@ -96,17 +100,10 @@ const TodoListItem = (props) => {
     );
 };
 
-// const mapStateToProps = (state, props) => ({
-//     // console.log('props', props.id);
-//     // list: state.lists.find(list => list.parentId === props.id)
-//     // console.log('list',list);
-//     // console.log('props' , props)
-//     // return {
-//     //     list,
-//     //     items: list ? state.items.filter(item => item.parentId === list.listId) : []
-//     // };
-//     // items: state.items
-// });
+const mapStateToProps = (state, props) => ({
+    list: state.lists.find(list => list.parentId === props.id),
+    lists: state.lists
+});
 
 const mapDispatchToProps = (dispatch) => ({
     onAddList: id => dispatch(addList(id)),
@@ -114,5 +111,4 @@ const mapDispatchToProps = (dispatch) => ({
     onDeleteList: id => dispatch(deleteList(id)),
 });
 
-
-export default connect(null, mapDispatchToProps)(TodoListItem)
+export default connect(mapStateToProps, mapDispatchToProps)(TodoListItem)

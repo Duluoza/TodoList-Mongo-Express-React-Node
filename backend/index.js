@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 
 const dbRoute = "mongodb://localhost:27017/Todo";
-mongoose.connect(dbRoute, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbRoute, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false });
 
 let db = mongoose.connection;
 db.once('open', () => console.log('connected to the database'));

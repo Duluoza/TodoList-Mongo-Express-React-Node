@@ -25,7 +25,7 @@ export const TodoListContainer = ({elements,  onAddItem, t_id}) => {
     )
 };
 
-const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetItems, t_id}) => {
+const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetItems, lists, ...props}) => {
 
     const getItemsFromDb = async () => {
         const dataBase = await axios.get('http://localhost:3001/items/getItems');
@@ -43,6 +43,11 @@ const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetIte
         getItemsFromDb();
         getListsFromDb();
     }, []);
+    
+    let { t_id } = props;
+    if(t_id === 0 && lists) {
+        t_id = lists._id
+    }
 
     const arrPosition = items
         .filter((item) => item.parentId === t_id)
@@ -75,17 +80,9 @@ const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetIte
 
 const mapStateToProps = (state, props) => {
     return {
-        items: state.items
+        items: state.items,
+        lists: state.lists.find(item => item.parentId === null),
     }
-    // console.log('MAPS STATE TO PROPS LIST', props);
-    // const list = state.lists.find(list => list.parentId === props.parentId);
-    // console.log('list' , list);
-    // console.log('props' , props);
-    // return {
-    //     list,
-    //     lists: state.lists,
-    //     items: list ? state.items.filter(item => item.parentId === list.id) : [],
-    // }
 };
 
 const mapDispatchToProps = (dispatch) => ({

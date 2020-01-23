@@ -6,7 +6,7 @@ class ItemAddForm extends Component {
 
     state = {
         label: '',
-        t_id: '',
+        t_id: ''
     };
 
     onLabelChange = (e) => {

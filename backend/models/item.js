@@ -3,8 +3,12 @@ const Schema = mongoose.Schema;
 
 const itemSchema = new Schema({
     label: String,
-    parentId: Number,
+    parentId: Schema.Types.ObjectID,
     pos: Number,
+    ancestors: {
+        type: Array,
+        default: []
+    },
 });
 
 module.exports = mongoose.model("Item", itemSchema);
