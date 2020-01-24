@@ -20,14 +20,7 @@ const deleteItem = (id) => async dispatch => {
     let newItem = await axios.post('http://localhost:3001/items/deleteItem', {
         id: id
     });
-    console.log(newItem)
     dispatch({type: 'DELETE_ITEM', payload: newItem.data.data._id})
-
-
-    // return {
-    //     type: "DELETE_ITEM",
-    //     payload: id
-    // }
 };
 
 const moveUp = (item) => {

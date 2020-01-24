@@ -9,34 +9,15 @@ import {addList, deleteItem, deleteList} from "../../actions";
 const TodoListItem = (props) => {
 
     const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList, list, lists} = props;
-    const [isChild, setIsChild] = useState(false);
     const [isDisable, setIsDisable] = useState(true);
-
-    // if(list && list.parentId === id) {
-    //     setIsChild(true);
-    // }
-
-    // const addList = (id) => {
-    //     setIsChild(true);
-    //     onAddList(id);
-    //     setIsDisable(true)
-    // };
-
-    // const deleteList = (id) => {
-    //     onDeleteList(id);
-    //     setIsChild(false)
-    //     setIsDisable(false)
-    // };
 
     const deleteItem = (id) => {
         onDelete(id);
-        setIsChild(false)
     };
 
     const addOrDeleteList = (id, quantity) => {
         if(quantity === 1) onAddList(id);
         if(quantity === 0) onDeleteList(id);
-        setIsChild(!!quantity);
         setIsDisable(!!quantity);
     };
 
@@ -86,7 +67,7 @@ const TodoListItem = (props) => {
             <div className='todo-list-sub'>
                 {list && list.parentId === id &&
                 <>
-                    <TodoList t_id={id} key={id}/>
+                    <TodoList t_id={list._id} key={list._id}/>
                     <button
                         className="btn btn-outline-danger"
                         onClick={() => addOrDeleteList(id , 0)}

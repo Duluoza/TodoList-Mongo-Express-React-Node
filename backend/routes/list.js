@@ -1,5 +1,6 @@
 const {Router} = require('express');
 const List = require('../models/list');
+const Item = require('../models/item');
 const router = new Router();
 
 router.post('/addList', async (req, res) => {
@@ -8,6 +9,9 @@ router.post('/addList', async (req, res) => {
     let { parentId } = req.body;
 
     list.parentId = parentId;
+
+    let result = await Item.find({_id: parentId});
+    list.ancestors = result[0].ancestors.concat(parentId);
 
     list.save((err, obj) => {
         if (err) return res.json({ success: false, error: err });

@@ -17,8 +17,9 @@ router.post('/addItem', async (req, res) => {
     data.parentId = parentId;
     let position = await Item.find({ parentId: parentId });
     data.pos = position.length;
-    // let ancestors = await List.find({_id: parentId});
-    // data.ancestors.push(ancestors[0]._id);
+
+    let result = await List.find({_id: parentId});
+    data.ancestors = result[0].ancestors.concat(parentId);
 
     data.save((err, obj) => {
         if (err) return res.json({ success: false, error: err });
@@ -33,8 +34,21 @@ router.get('/getItems', (req, res) => {
     });
 });
 
-router.post('/deleteItem', async (req, res) => {
+router.post('/deleteItem', (req, res) => {
     const {id} = req.body;
+    console.log('id' , id)
+    List.find({ ancestors: id }).then(lists => {
+        if (lists.length) {
+            List.deleteMany({ ancestors: id }).then(() => {
+            })
+        }
+    });
+    Item.find({ ancestors: id }).then(items => {
+        if (items.length) {
+            Item.deleteMany({ ancestors: id }).then(() => {
+            })
+        }
+    });
     Item.find({_id: id}).then(item => {
         let parentId = item[0].parentId;
         let pos = item[0].pos;

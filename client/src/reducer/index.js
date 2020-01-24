@@ -33,7 +33,6 @@ const reducer = (state = initialState, action) => {
                 ...state, lists: action.payload
             };
         case "ADD_ITEM" :
-            console.log('action', action.payload);
             // const arrItemsForList = state.items.filter(item => item.parentId === action.payload.t_id);
             // if(arrItemsForList.length === 0){
             //     action.payload.pos = 1
@@ -52,9 +51,9 @@ const reducer = (state = initialState, action) => {
 
             };
         case "DELETE_ITEM" :
-            const delItem = state.items.find((el) => el._id === action.payload);
+            let delItem = state.items.find((el) => el._id === action.payload);
             let newArray = state.items
-                .filter(item => (item._id !== delItem._id && item.parentId !== delItem._id && item._id !== item.parentId))
+                .filter(item => (!item.ancestors.includes(action.payload)) && item._id !== action.payload)
                 .map(item => {
                     if (item.parentId === delItem.parentId && item.pos > delItem.pos) item.pos -= 1;
                     return item;
@@ -62,7 +61,8 @@ const reducer = (state = initialState, action) => {
             return {
                     ...state,
                     items: newArray,
-                    lists: state.lists.filter(item => item.parentId !== delItem.id)
+                    lists: state.lists
+                        .filter(item => (!item.ancestors.includes(action.payload)) && item.parentId !== action.payload)
                 };
         case "MOVE_UP" :
             return itemMove(state, action, 1);
