@@ -31,7 +31,6 @@ const moveUp = (item) => async dispatch => {
         pos: item.pos-1,
         ancestors: item.ancestors
     });
-    console.log(currentItem)
     dispatch({type: 'MOVE_UP', payload: currentItem.data.data})
 };
 

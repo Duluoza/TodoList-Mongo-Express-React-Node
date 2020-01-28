@@ -25,7 +25,7 @@ export const TodoListContainer = ({elements,  onAddItem, t_id}) => {
     )
 };
 
-const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetItems, lists, ...props}) => {
+const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetItems, t_id}) => {
 
     const getItemsFromDb = async () => {
         const dataBase = await axios.get('http://localhost:3001/items/getItems');
@@ -43,11 +43,6 @@ const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetIte
         getItemsFromDb();
         getListsFromDb();
     }, []);
-    
-    let { t_id } = props;
-    if(t_id === 0 && lists) {
-        t_id = lists._id
-    }
 
     const arrPosition = items
         .filter((item) => item.parentId === t_id)
@@ -78,10 +73,9 @@ const TodoList = ({ items, onAddItem, onSetLists, onMoveUP, onMoveDown, onSetIte
 };
 
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = (state) => {
     return {
         items: state.items,
-        lists: state.lists.find(item => item.parentId === null),
     }
 };
 

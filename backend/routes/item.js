@@ -7,11 +7,6 @@ router.post('/addItem', async (req, res) => {
     let data = new Item();
 
     let { label, parentId } = req.body;
-    
-    if(parentId === 0) {
-        const startId = await List.find({parentId: null});
-        parentId = startId[0]._id
-    }
 
     data.label = label;
     data.parentId = parentId;
