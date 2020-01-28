@@ -8,7 +8,7 @@ import {addList, deleteItem, deleteList} from "../../actions";
 
 const TodoListItem = (props) => {
 
-    const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList, list, lists} = props;
+    const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList, list,} = props;
     const [isDisable, setIsDisable] = useState(true);
 
     const deleteItem = (id) => {
@@ -70,7 +70,7 @@ const TodoListItem = (props) => {
                     <TodoList t_id={list._id} key={list._id}/>
                     <button
                         className="btn btn-outline-danger"
-                        onClick={() => addOrDeleteList(id , 0)}
+                        onClick={() => addOrDeleteList(list._id , 0)}
                     >
                         Delete
                     </button>

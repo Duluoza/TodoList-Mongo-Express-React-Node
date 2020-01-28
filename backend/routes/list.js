@@ -34,4 +34,24 @@ router.get('/getLists', (req, res) => {
 
 });
 
+router.post('/deleteList', (req, res) => {
+    const {id} = req.body;
+
+    List.find({ ancestors: id }).then(lists => {
+        if (lists.length) {
+            List.deleteMany({ ancestors: id }).then(() => {
+            })
+        }
+    });
+    Item.find({ ancestors: id }).then(items => {
+        if (items.length) {
+            Item.deleteMany({ ancestors: id }).then(() => {
+            })
+        }
+    });
+    List.findByIdAndRemove({_id: id}).then(item => {
+        res.status(200).json({ success: true, data: item });
+    });
+});
+
 module.exports = router;

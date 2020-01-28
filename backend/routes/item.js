@@ -36,7 +36,6 @@ router.get('/getItems', (req, res) => {
 
 router.post('/deleteItem', (req, res) => {
     const {id} = req.body;
-    console.log('id' , id)
     List.find({ ancestors: id }).then(lists => {
         if (lists.length) {
             List.deleteMany({ ancestors: id }).then(() => {

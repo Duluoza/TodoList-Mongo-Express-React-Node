@@ -46,12 +46,11 @@ const addList = (id) => async dispatch => {
     dispatch({type: 'ADD_LIST', payload: newList.data.data})
 };
 
-const deleteList = (id) => {
-
-    return {
-        type: "DELETE_LIST",
-        payload: id
-    }
+const deleteList = (id) => async dispatch => {
+    let delList =  await axios.post('http://localhost:3001/lists/deleteList', {
+        id: id
+    });
+    dispatch({type: 'DELETE_LIST', payload: delList.data.data._id})
 };
 
 export { addItem, deleteItem, moveUp, moveDown, addList, deleteList, setItems, setLists }
