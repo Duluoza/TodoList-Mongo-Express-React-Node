@@ -83,7 +83,6 @@ const TodoListItem = (props) => {
 
 const mapStateToProps = (state, props) => ({
     list: state.lists.find(list => list.parentId === props.id),
-    lists: state.lists
 });
 
 const mapDispatchToProps = (dispatch) => ({

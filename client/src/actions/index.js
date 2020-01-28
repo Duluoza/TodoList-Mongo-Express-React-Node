@@ -23,12 +23,16 @@ const deleteItem = (id) => async dispatch => {
     dispatch({type: 'DELETE_ITEM', payload: newItem.data.data._id})
 };
 
-const moveUp = (item) => {
-
-    return {
-        type: "MOVE_UP",
-        payload: item
-    }
+const moveUp = (item) => async dispatch => {
+    let currentItem = await axios.patch("http://localhost:3001/items/editItem", {
+        label: item.label,
+        parentId: item.parentId,
+        _id: item._id,
+        pos: item.pos-1,
+        ancestors: item.ancestors
+    });
+    console.log(currentItem)
+    dispatch({type: 'MOVE_UP', payload: currentItem.data.data})
 };
 
 const moveDown = (item) => {

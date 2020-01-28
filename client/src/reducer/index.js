@@ -7,12 +7,11 @@ const itemMove = (state, action, quantity) => {
     return {
         ...state,
         items: state.items.map(item => {
-            if(item.id === action.payload.id) {
+            if(item._id === action.payload._id) {
                 const arrMove = state.items.filter((item) => item.parentId === action.payload.parentId);
-                const itemMove = arrMove.find((item)=> item.pos === action.payload.pos - quantity );
+                const itemMove = arrMove.find((item)=> item.pos === action.payload.pos );
                 itemMove.pos = itemMove.pos + quantity;
-                const position = action.payload;
-                position.pos = position.pos - quantity;
+                item.pos = action.payload.pos;
             }
             return item
         })
