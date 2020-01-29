@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import AppHeader from '../app-header';
-import TodoList from '../todo-list';
+import TodoListContainer from '../todo-list-container';
 
 const Wrapper = () => {
     const result = useSelector(state => state.lists);
@@ -10,7 +10,7 @@ const Wrapper = () => {
     return (
         <div className="todo-app">
             <AppHeader />
-            <TodoList t_id={result && result.length && result[0]._id}/>
+            <TodoListContainer listId={result && result.length && result[0]._id}/>
         </div>
     )
 };

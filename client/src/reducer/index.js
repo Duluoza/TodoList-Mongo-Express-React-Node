@@ -3,36 +3,28 @@ const initialState = {
     lists: [],
 };
 
-const itemMove = (state, action, quantity) => {
+const itemMove = (state, action) => {
     return {
         ...state,
         items: state.items.map(item => {
-            if(item._id === action.payload._id) {
-                const arrMove = state.items.filter((item) => item.parentId === action.payload.parentId);
-                const itemMove = arrMove.find((item)=> item.pos === action.payload.pos );
-                itemMove.pos = itemMove.pos + quantity;
-                item.pos = action.payload.pos;
-            }
-            return item
+            if (item._id === action.payload[0].data._id) item.pos = action.payload[0].data.pos;
+            if (item._id === action.payload[1].data._id) item.pos = action.payload[1].data.pos;
+            return item;
         })
-    }
+    };
 };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
         case 'SET_ITEMS' :
-            return {
-                ...state, items: action.payload
-            };
+            return { ...state, items: action.payload };
+
         case 'SET_LISTS' :
-            return {
-                ...state, lists: action.payload
-            };
+            return { ...state, lists: action.payload };
+
         case "ADD_ITEM" :
-            return {
-                ...state,
-                items: [...state.items, action.payload]
-            };
+            return { ...state, items: [...state.items, action.payload] };
+
         case "DELETE_ITEM" :
             let delItem = state.items.find((el) => el._id === action.payload);
             let newArrayItems = state.items
@@ -47,22 +39,23 @@ const reducer = (state = initialState, action) => {
                     lists: state.lists
                         .filter(item => (!item.ancestors.includes(action.payload)) && item.parentId !== action.payload)
                 };
+
         case "MOVE_UP" :
-            return itemMove(state, action, 1);
+            return itemMove(state, action);
+
         case "MOVE_DOWN" :
-            return itemMove(state, action, -1);
+            return itemMove(state, action);
+
         case "ADD_LIST" :
-            return {
-                ...state,
-                lists: [...state.lists, action.payload],
-            };
+            return { ...state, lists: [...state.lists, action.payload] };
+
         case "DELETE_LIST" :
+            const filterForDelete = item => (!item.ancestors.includes(action.payload)) && item._id !== action.payload;
             return {
-                items: state.items
-                    .filter(item => (!item.ancestors.includes(action.payload)) && item._id !== action.payload),
-                lists: state.lists
-                    .filter(item => (!item.ancestors.includes(action.payload)) && item._id !== action.payload)
+                items: state.items.filter(filterForDelete),
+                lists: state.lists.filter(filterForDelete)
             };
+
         default:
             return state
     }

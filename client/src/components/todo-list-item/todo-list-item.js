@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 
 import './todo-list-item.css';
-import TodoList from '../todo-list/todo-list'
+import TodoListContainer from '../todo-list-container'
 import {connect} from 'react-redux'
-import {addList, deleteItem, deleteList} from "../../actions";
+import {addList, deleteItem, deleteList, moveDown, moveUp} from "../../actions";
 
 
 const TodoListItem = (props) => {
-
     const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList, list,} = props;
+
     const [isDisable, setIsDisable] = useState(true);
 
-    const deleteItem = (id) => {
-        onDelete(id);
+    const moveUpAndDownItem = (id, quantity) => {
+        const movedItems = arrPosition.sort((a, b) => a.pos - b.pos);
+        const itemPositionIndex = movedItems.findIndex(item => item._id === id);
+        if(quantity === 1) onMoveUP(movedItems[itemPositionIndex], movedItems[itemPositionIndex - quantity]);
+        if(quantity === -1) onMoveDown(movedItems[itemPositionIndex], movedItems[itemPositionIndex - quantity]);
     };
 
     const addOrDeleteList = (id, quantity) => {
@@ -21,8 +24,13 @@ const TodoListItem = (props) => {
         setIsDisable(!!quantity);
     };
 
-    const min = Math.min.apply(null, arrPosition);
-    const max = Math.max.apply(null, arrPosition);
+    const deleteItem = (id) => {
+        onDelete(id);
+    };
+
+    const itemPosition = arrPosition.map(item => item.pos);
+    const min = Math.min.apply(null, itemPosition);
+    const max = Math.max.apply(null, itemPosition);
 
     return (
         <>
@@ -50,13 +58,13 @@ const TodoListItem = (props) => {
                 <div className='todo-list-item-arrow_move'>
                     {min !== pos && <button type="button"
                                             className='btn btn-outline-success btn-sm btn-up'
-                                            onClick={onMoveUP}
+                                            onClick={() => moveUpAndDownItem(id, 1)}
                     >
                         <i className='fa fa-arrow-up'/>
                     </button>}
                     {max !== pos && <button type="button"
                                             className='btn btn-outline-success btn-sm btn-down'
-                                            onClick={onMoveDown}
+                                            onClick={() => moveUpAndDownItem(id, -1)}
 
                     >
                         <i className='fa fa-arrow-down'/>
@@ -67,7 +75,7 @@ const TodoListItem = (props) => {
             <div className='todo-list-sub'>
                 {list && list.parentId === id &&
                 <>
-                    <TodoList t_id={list._id} key={list._id}/>
+                    <TodoListContainer listId={list._id} key={list._id}/>
                     <button
                         className="btn btn-outline-danger"
                         onClick={() => addOrDeleteList(list._id , 0)}
@@ -89,6 +97,8 @@ const mapDispatchToProps = (dispatch) => ({
     onAddList: id => dispatch(addList(id)),
     onDelete: id => dispatch(deleteItem(id)),
     onDeleteList: id => dispatch(deleteList(id)),
+    onMoveUP: (first, child) => dispatch(moveUp(first, child)),
+    onMoveDown: (first, child) => dispatch(moveDown(first, child)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoListItem)

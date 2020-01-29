@@ -9,7 +9,6 @@ router.post('/addList', async (req, res) => {
     let { parentId } = req.body;
 
     list.parentId = parentId;
-
     let result = await Item.find({_id: parentId});
     list.ancestors = result[0].ancestors.concat(parentId);
 

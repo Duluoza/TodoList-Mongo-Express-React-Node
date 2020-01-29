@@ -60,16 +60,11 @@ router.post('/deleteItem', (req, res) => {
 });
 
 router.patch('/editItem', async (req, res) => {
-    let overItem = await Item.find({pos: req.body.pos});
-    overItem[0].pos +=1;
-
-    Item.findByIdAndUpdate({_id: req.body._id}, req.body).then(() => {
-        Item.findOne({_id: req.body._id}).then(item => {
-            res.status(200).json({ success: true, data: item });
+    Item.findByIdAndUpdate({ _id: req.body._id }, req.body).then(() => {
+        Item.findOne({ _id: req.body._id }).then(item => {
+            res.status(200).send(item);
         });
     });
-
-    await Item.findByIdAndUpdate({_id: overItem[0]._id}, overItem[0]);
 });
 
 module.exports = router;
