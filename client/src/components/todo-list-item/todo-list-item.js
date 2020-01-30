@@ -3,19 +3,19 @@ import React, {useState} from 'react';
 import './todo-list-item.css';
 import TodoListContainer from '../todo-list-container'
 import {connect} from 'react-redux'
-import {addList, deleteItem, deleteList, moveDown, moveUp} from "../../actions";
+import {addList, deleteItem, deleteList, moveUpAndDown} from "../../actions";
 
 
 const TodoListItem = (props) => {
-    const {label, onDelete, pos, id, onMoveUP, onMoveDown, onAddList, arrPosition, onDeleteList, list,} = props;
+    const {label, onDelete, pos, id, onMove, onAddList, arrPosition, onDeleteList, list,} = props;
 
     const [isDisable, setIsDisable] = useState(true);
 
     const moveUpAndDownItem = (id, quantity) => {
         const movedItems = arrPosition.sort((a, b) => a.pos - b.pos);
         const itemPositionIndex = movedItems.findIndex(item => item._id === id);
-        if(quantity === 1) onMoveUP(movedItems[itemPositionIndex], movedItems[itemPositionIndex - quantity]);
-        if(quantity === -1) onMoveDown(movedItems[itemPositionIndex], movedItems[itemPositionIndex - quantity]);
+        if(quantity === 1) onMove(movedItems[itemPositionIndex], movedItems[itemPositionIndex - quantity], 1);
+        if(quantity === -1) onMove(movedItems[itemPositionIndex], movedItems[itemPositionIndex - quantity], -1);
     };
 
     const addOrDeleteList = (id, quantity) => {
@@ -97,8 +97,9 @@ const mapDispatchToProps = (dispatch) => ({
     onAddList: id => dispatch(addList(id)),
     onDelete: id => dispatch(deleteItem(id)),
     onDeleteList: id => dispatch(deleteList(id)),
-    onMoveUP: (first, child) => dispatch(moveUp(first, child)),
-    onMoveDown: (first, child) => dispatch(moveDown(first, child)),
+    // onMoveUP: (first, child, quantity) => dispatch(moveUp(first, child, quantity)),
+    // onMoveDown: (first, child, quantity) => dispatch(moveDown(first, child, quantity)),
+    onMove: (first, child, quantity) => dispatch(moveUpAndDown(first, child, quantity)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoListItem)

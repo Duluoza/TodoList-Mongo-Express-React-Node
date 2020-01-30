@@ -1,9 +1,9 @@
 const {Router} = require('express');
-const List = require('../models/list');
-const Item = require('../models/item');
+const List = require('../schemas/list');
+const Item = require('../schemas/item');
 const router = new Router();
 
-router.post('/addList', async (req, res) => {
+router.post('/add', async (req, res) => {
     let list = new List();
 
     let { parentId } = req.body;
@@ -18,7 +18,25 @@ router.post('/addList', async (req, res) => {
     });
 });
 
-router.get('/getLists', (req, res) => {
+// router.get('/:id', async (req, res) => {
+//     const {id} = req.params;
+//
+// })
+
+router.get('/', async (req, res) => {
+    // const lists = await  List.find({});
+    // let data = [];
+    //
+    // if(lists.length === 0){
+    //     const list = await List.create({parentId: null});
+    //     data.push(list)
+    // }
+    // data = [
+    //     ...lists
+    // ];
+    //
+    // res.json({ success: true, data });
+
     List.find({}).then(datas => {
         if (!datas.length) {
             List.create({parentId: null})
@@ -33,8 +51,8 @@ router.get('/getLists', (req, res) => {
 
 });
 
-router.post('/deleteList', (req, res) => {
-    const {id} = req.body;
+router.post('/delete', (req, res) => {
+    const { id } = req.body;
 
     List.find({ ancestors: id }).then(lists => {
         if (lists.length) {

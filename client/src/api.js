@@ -5,40 +5,24 @@ const instance = axios.create({
 });
 export const request = {
     addItemRequest: ({label, listId}) => {
-        return instance.post('items/addItem', {
+        return instance.post('items/add', {
             label: label,
             parentId: listId,});
     },
 
     deleteItemRequest: (id) => {
-        return instance.post('items/deleteItem', { id: id })
+        return instance.post('items/delete', { id: id })
     },
 
     moveUpItemRequest: (item) => {
-        return instance.post('items/editItem', { item })
+        return instance.patch('items/edit', item)
     },
 
+    addListRequest: (id) => {
+        return instance.post('lists/add', { parentId: id })
+    },
 
-    // remove: id => {
-    //     return instance.delete('delete', {
-    //         data: { id },
-    //     });
-    // },
-    // update: objToUpd => {
-    //     return instance.post('update', {
-    //         objToUpd,
-    //     });
-    // },
-    // removeSublist: id => {
-    //     return instance.post('removeSublist', { id });
-    // },
-    // addSubList: id => {
-    //     return instance.post('addSublist', { id });
-    // },
-    // getData: listId => {
-    //     return instance.get(`${listId}`);
-    // },
-    // getNewList: () => {
-    //     return instance.get(`me`);
-    // },
+    deleteListRequest: (id) => {
+        return instance.post('lists/delete', { id: id })
+    }
 };

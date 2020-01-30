@@ -8,9 +8,9 @@ import TodoList from "../todo-list";
 const TodoListContainer = ({ items, onAddItem, onSetLists, onSetItems, listId}) => {
 
     const getItemsAndListsFromDb = async () => {
-        const dataBaseItems = await axios.get('http://localhost:3001/items/getItems');
+        const dataBaseItems = await axios.get('http://localhost:3001/items');
         onSetItems(dataBaseItems);
-        const dataBaseLists = await axios.get('http://localhost:3001/lists/getLists');
+        const dataBaseLists = await axios.get('http://localhost:3001/lists');
         onSetLists(dataBaseLists);
     };
 
