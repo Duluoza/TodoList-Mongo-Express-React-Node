@@ -7,8 +7,8 @@ const itemMove = (state, action) => {
     return {
         ...state,
         items: state.items.map(item => {
-            if (item._id === action.payload[0].data._id) item.pos = action.payload[0].data.pos;
-            if (item._id === action.payload[1].data._id) item.pos = action.payload[1].data.pos;
+            if (item._id === action.payload[0]._id) item.pos = action.payload[0].pos;
+            if (item._id === action.payload[1]._id) item.pos = action.payload[1].pos;
             return item;
         })
     };

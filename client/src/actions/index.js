@@ -21,7 +21,7 @@ const deleteItem = (id) => async dispatch => {
 const moveUpAndDown = (first, second, quantity) => async dispatch => {
     const firstMove = await request.moveUpItemRequest({...first, pos: first.pos - quantity});
     const secondMove = await request.moveUpItemRequest({...second, pos: second.pos + quantity});
-    const resultMove = await Promise.all([firstMove, secondMove]);
+    const resultMove = [firstMove.data.data, secondMove.data.data];
     if (quantity === 1) dispatch({type: 'MOVE_UP', payload: resultMove});
     if (quantity === -1) dispatch({type: 'MOVE_DOWN', payload: resultMove});
 };

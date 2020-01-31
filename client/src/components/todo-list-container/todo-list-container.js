@@ -1,16 +1,17 @@
-import axios from "axios";
-import TodoListItem from "../todo-list-item/todo-list-item";
-import {addItem, setItems, setLists} from "../../actions";
-import {connect} from "react-redux";
 import React, {useEffect} from 'react';
+import {connect} from "react-redux";
+
+import { request } from '../../api'
+import TodoListItem from "../todo-list-item/todo-list-item";
 import TodoList from "../todo-list";
+import {addItem, setItems, setLists} from "../../actions";
 
 const TodoListContainer = ({ items, onAddItem, onSetLists, onSetItems, listId}) => {
 
     const getItemsAndListsFromDb = async () => {
-        const dataBaseItems = await axios.get('http://localhost:3001/items');
+        const dataBaseItems = await request.getItems();
         onSetItems(dataBaseItems);
-        const dataBaseLists = await axios.get('http://localhost:3001/lists');
+        const dataBaseLists = await request.getLists();
         onSetLists(dataBaseLists);
     };
 

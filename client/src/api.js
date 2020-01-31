@@ -4,6 +4,15 @@ const instance = axios.create({
     baseURL: 'http://localhost:3001/',
 });
 export const request = {
+
+    getItems: () => {
+        return instance.get('http://localhost:3001/items')
+    },
+
+    getLists: () => {
+        return instance.get('http://localhost:3001/lists')
+    },
+
     addItemRequest: ({label, listId}) => {
         return instance.post('items/add', {
             label: label,

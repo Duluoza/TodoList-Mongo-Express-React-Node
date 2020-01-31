@@ -1,80 +1,76 @@
 const Item = require('../schemas/item');
-const repository = require('./itemAndListRepository');
+const repositoryClass = require('./itemAndListRepository');
+const repository = new repositoryClass;
 
-const itemModel = {
-    add: async (label, parentId) => {
+class itemModel {
+
+    async add (label, parentId) {
 
         let item = new Item();
 
         item.label = label;
         item.parentId = parentId;
 
-        let position = await utils.findItemByParentId(parentId);
+        let position = await this.findItemByParentId(parentId);
         item.pos = position.length;
 
         let parent = await repository.findListByParentId(parentId);
         item.ancestors = parent[0].ancestors.concat(parentId);
 
         return item.save();
-    },
+    }
 
-    delete: async (id) => {
+    async delete (id) {
 
         const listAncestors  = await repository.findListAncesById(id);
         if(listAncestors.length) await repository.deleteManyLists(id);
 
-        const itemAncestors = await utils.findItemAncesById(id);
-        if(itemAncestors.length) await utils.deleteManyItems(id);
+        const itemAncestors = await repository.findItemAncesById(id);
+        if(itemAncestors.length) await repository.deleteManyItems(id);
 
-        const deleteItem = await utils.findItemById(id);
+        const deleteItem = await this.findItemById(id);
         let parentId = deleteItem[0].parentId;
         let pos = deleteItem[0].pos;
-        const items = await utils.findItemByParentId(parentId);
+        const items = await this.findItemByParentId(parentId);
         items.filter(item => item.id !== id)
             .forEach(item => {
                 if(item.pos > pos) item.pos -= 1;
                 item.save()
             });
 
-        return await utils.findItemByIdAndRemove(id);
-    },
-
-    update: async (item) => {
-
-        await utils.findItemByIdAndUpdate(item);
-
-        return await utils.findOne(item._id);
+        return await this.findItemByIdAndRemove(id);
     }
-};
 
-const utils = {
-    findItemByParentId: async (parentId) =>{
+    async update (item) {
+
+        await this.findItemByIdAndUpdate(item);
+
+        return await this.findItemById(item._id);
+    }
+
+    async get () {
+        return await this.findAllItems();
+    }
+
+    async findAllItems () {
+        return await Item.find({});
+    }
+
+    async findItemByParentId (parentId) {
         return await Item.find({ parentId: parentId });
-    },
+    }
 
-    findItemAncesById: async (id) => {
-        return await Item.find({ ancestors: id })
-    },
-
-    deleteManyItems: async (id) => {
-        return await Item.deleteMany({ ancestors: id });
-    },
-
-    findItemById: async (id) => {
+    async findItemById (id) {
         return await Item.find({_id: id});
-    },
+    }
 
-    findOne: async (id) => {
-        return await Item.findOne({ _id: id })
-    },
-
-    findItemByIdAndRemove: async (id) => {
+    async findItemByIdAndRemove (id) {
         return await Item.findByIdAndRemove({_id: id})
-    },
+    }
 
-    findItemByIdAndUpdate: async (item) => {
+    async findItemByIdAndUpdate (item) {
         return await Item.findByIdAndUpdate({ _id: item._id }, item)
     }
-};
+}
 
 module.exports = itemModel;
