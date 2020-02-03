@@ -4,6 +4,10 @@ const repository = new repositoryClass;
 
 class itemModel {
 
+    constructor(){
+        this.repo = new repositoryClass('Item')
+    }
+
     async add (label, parentId) {
 
         let item = new Item();
