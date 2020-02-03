@@ -9,7 +9,7 @@ class listModel {
         let list = new List;
 
         list.parentId = parentId;
-        let result = await repository.findItemByParentId(parentId);
+        let result = await repository.findItemByParentIdForId(parentId);
         list.ancestors = result[0].ancestors.concat(parentId);
 
         return list.save();
@@ -17,10 +17,10 @@ class listModel {
 
     async get () {
 
-        const lists = await this.findAllList();
+        const lists = await repository.findAllList();
         let data = [];
         if(!lists.length) {
-            const newList = await this.createList(null);
+            const newList = await repository.createList(null);
             data.push(newList);
         } else {
             data = [...lists];
@@ -37,19 +37,7 @@ class listModel {
         const itemAncestors = await repository.findItemAncesById(id);
         if(itemAncestors.length) await repository.deleteManyItems(id);
 
-        return await this.findListByIdAndRemove(id);
-    }
-
-    async findAllList () {
-        return await List.find({});
-    }
-
-    async createList (parentId) {
-        return await List.create({parentId: parentId})
-    }
-
-    async findListByIdAndRemove (id) {
-        return await List.findByIdAndRemove({_id: id})
+        return await repository.findListByIdAndRemove(id);
     }
 }
 

@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/add', async (req, res) => {
+router.post('/', async (req, res) => {
 
     const { label, parentId } = req.body;
 
@@ -20,16 +20,16 @@ router.post('/add', async (req, res) => {
     await res.json({ success: true, data });
 });
 
-router.post('/delete', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     
-    const { id } = req.body;
+    let id = req.params.id;
 
     let data = await itemModel.delete(id);
 
     await res.json({ success: true, data });
 });
 
-router.patch('/edit', async (req, res) => {
+router.patch('/', async (req, res) => {
     
     const {...item} = req.body;
 

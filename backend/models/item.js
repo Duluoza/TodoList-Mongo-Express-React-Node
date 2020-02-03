@@ -11,7 +11,7 @@ class itemModel {
         item.label = label;
         item.parentId = parentId;
 
-        let position = await this.findItemByParentId(parentId);
+        let position = await repository.findItemByParentId(parentId);
         item.pos = position.length;
 
         let parent = await repository.findListByParentId(parentId);
@@ -28,48 +28,28 @@ class itemModel {
         const itemAncestors = await repository.findItemAncesById(id);
         if(itemAncestors.length) await repository.deleteManyItems(id);
 
-        const deleteItem = await this.findItemById(id);
+        const deleteItem = await repository.findItemById(id);
         let parentId = deleteItem[0].parentId;
         let pos = deleteItem[0].pos;
-        const items = await this.findItemByParentId(parentId);
+        const items = await repository.findItemByParentId(parentId);
         items.filter(item => item.id !== id)
             .forEach(item => {
                 if(item.pos > pos) item.pos -= 1;
                 item.save()
             });
 
-        return await this.findItemByIdAndRemove(id);
+        return await repository.findItemByIdAndRemove(id);
     }
 
     async update (item) {
 
-        await this.findItemByIdAndUpdate(item);
+        await repository.findItemByIdAndUpdate(item);
 
-        return await this.findItemById(item._id);
+        return await repository.findItemById(item._id);
     }
 
     async get () {
-        return await this.findAllItems();
-    }
-
-    async findAllItems () {
-        return await Item.find({});
-    }
-
-    async findItemByParentId (parentId) {
-        return await Item.find({ parentId: parentId });
-    }
-
-    async findItemById (id) {
-        return await Item.find({_id: id});
-    }
-
-    async findItemByIdAndRemove (id) {
-        return await Item.findByIdAndRemove({_id: id})
-    }
-
-    async findItemByIdAndUpdate (item) {
-        return await Item.findByIdAndUpdate({ _id: item._id }, item)
+        return await repository.findAllItems();
     }
 }
 

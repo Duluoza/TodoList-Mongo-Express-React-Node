@@ -3,7 +3,7 @@ const listModelClass = require('../models/list');
 const listModel = new listModelClass;
 const router = new Router();
 
-router.post('/add', async (req, res) => {
+router.post('/', async (req, res) => {
 
     const { parentId } = req.body;
 
@@ -21,9 +21,9 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/delete', async (req, res) => {
+router.post('/:id', async (req, res) => {
 
-    const { id } = req.body;
+    const id = req.params.id;
 
     let item = await listModel.delete(id);
 

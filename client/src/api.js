@@ -14,24 +14,24 @@ export const request = {
     },
 
     addItemRequest: ({label, listId}) => {
-        return instance.post('items/add', {
+        return instance.post('items', {
             label: label,
             parentId: listId,});
     },
 
     deleteItemRequest: (id) => {
-        return instance.post('items/delete', { id: id })
+        return instance.delete(`items/${id}`)
     },
 
     moveUpItemRequest: (item) => {
-        return instance.patch('items/edit', item)
+        return instance.patch('items', item)
     },
 
     addListRequest: (id) => {
-        return instance.post('lists/add', { parentId: id })
+        return instance.post('lists', { parentId: id })
     },
 
     deleteListRequest: (id) => {
-        return instance.post('lists/delete', { id: id })
+        return instance.post(`lists/${id}`)
     }
 };
