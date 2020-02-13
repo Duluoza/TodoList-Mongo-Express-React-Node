@@ -1,28 +1,19 @@
 const Item = require('../schemas/item');
 const List = require('../schemas/list');
 
-const entities = {
-    Item,
-    List,
-};
-
 class repository {
-
-    constructor(entityName){
-        this.entity = entities[entityName];
-    }
 
     // for Lists
     async findListByParentId (parentId) {
-        return await this.entity.find({_id: parentId});
+        return await List.find({_id: parentId});
     }
 
     async findListAncesById (id) {
-        return await this.entity.find({ ancestors: id })
+        return await List.find({ ancestors: id })
     }
 
     async deleteManyLists (id) {
-        return await this.entity.deleteMany({ ancestors: id })
+        return await List.deleteMany({ ancestors: id })
     }
 
     async findAllList () {

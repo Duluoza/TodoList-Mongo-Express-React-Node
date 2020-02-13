@@ -97,8 +97,6 @@ const mapDispatchToProps = (dispatch) => ({
     onAddList: id => dispatch(addList(id)),
     onDelete: id => dispatch(deleteItem(id)),
     onDeleteList: id => dispatch(deleteList(id)),
-    // onMoveUP: (first, child, quantity) => dispatch(moveUp(first, child, quantity)),
-    // onMoveDown: (first, child, quantity) => dispatch(moveDown(first, child, quantity)),
     onMove: (first, child, quantity) => dispatch(moveUpAndDown(first, child, quantity)),
 });
 
